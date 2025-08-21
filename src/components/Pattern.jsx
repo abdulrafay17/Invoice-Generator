@@ -17,7 +17,7 @@ export default function Pattern({from,  clientData, setClientData, itemDesc, set
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!itemDesc.itemDescription || !itemDesc.quantity || !itemDesc.rate || !itemDesc.amount) {
+        if (!itemDesc.itemDescription || !itemDesc.quantity || !itemDesc.rate) {
             return
         }
         // add the current itemDesc to the items array
