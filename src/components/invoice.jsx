@@ -3,6 +3,7 @@ import { liveDate } from "../utils/uttils";
 import { formatDDMMYY } from "../utils/uttils";
 import { totalAmount } from "../utils/uttils";
 import html2pdf from "html2pdf.js";
+import html2canvas from "html2canvas";
 
 export default function Invoice({ from, clientData, items }) {
     const invoiceRef = useRef();
@@ -25,9 +26,21 @@ export default function Invoice({ from, clientData, items }) {
         }, 100);
     }
 
+    
+        function downloadPNG() {
+        const element = invoiceRef.current;
+
+        html2canvas(element, { scale: 2 }).then(canvas => {
+            const link = document.createElement("a");
+            link.download = `Invoice_${clientData.client || "Customer"}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }).catch(err => console.error("PNG generation failed:", err));
+        }
+
     return (
         <>
-            <div ref={invoiceRef} className="max-w-4xl mx-auto p-6 shadow-lg rounded-lg my-5" style={{ backgroundColor: '#ffffff', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' }}>
+            <div ref={invoiceRef} className="w-[794px] h-[1123px] mx-auto p-6 shadow-lg rounded-lg my-5" style={{ backgroundColor: '#ffffff', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' }}>
                 <div className="flex flex-col border-b pb-4 mb-6">
                     <div className="w-full flex flex-col items-center">
                         <img src="./logo.svg" alt="Logo" className="h-35" />
@@ -102,7 +115,7 @@ export default function Invoice({ from, clientData, items }) {
             </div>
 
             <button
-                onClick={downloadPDF}
+                onClick={downloadPNG}
                 className="font-bold py-2 px-4 rounded mx-auto block mb-10"
                 style={{ backgroundColor: '#059669', color: '#ffffff' }}
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#047857'}
