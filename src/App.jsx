@@ -7,6 +7,8 @@ import { totalAmount } from "./utils/uttils.js";
 
 export default function App() {
 
+  const [mode, setMode] = useState(false)
+
   const from =
         {
             name: 'Weave-Tech Labels',
@@ -35,9 +37,9 @@ export default function App() {
       totalAmount(items);
   
   return (
-    <div className="overflow-x-hidden">
-    <Pattern from={from} clientData={clientData} setClientData={setClientData} itemDesc={itemDesc} items={items} setItemDesc={setItemDesc} setItems={setItems}/>
-    <Invoice from={from} clientData={clientData} items={items} />
+    <div className={`overflow-x-hidden ${mode ? 'bg-black' : 'bg-white'}`}>
+    <Pattern from={from} mode={mode} setMode={setMode} clientData={clientData} setClientData={setClientData} itemDesc={itemDesc} items={items} setItemDesc={setItemDesc} setItems={setItems}/>
+    <Invoice from={from} mode={mode} clientData={clientData} items={items} setItems={setItems} />
     </div>
   )
 }

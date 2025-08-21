@@ -5,9 +5,9 @@ import { totalAmount } from "../utils/uttils";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
 
-export default function Invoice({ from, clientData, items }) {
+export default function Invoice({ from, clientData, items, setItems, mode }) {
     const invoiceRef = useRef();
-    const [format, setFormat] = useState('');
+    const [format, setFormat] = useState('Png');
 
     function downloadPDF() {
         const element = invoiceRef.current;
@@ -38,6 +38,10 @@ export default function Invoice({ from, clientData, items }) {
             link.href = canvas.toDataURL("image/png");
             link.click();
         }).catch(err => console.error("PNG generation failed:", err));
+        }
+
+        function handleDelete(index) {
+            setItems(prev => prev.filter((_, i)=> i !== index ))
         }
 
     return (
@@ -96,10 +100,10 @@ export default function Invoice({ from, clientData, items }) {
                         <tbody>
                             {items.map((i, index) => (
                                 <tr key={index} className="border-1">
-                                    <td className="p-1 custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.itemDescription}</td>
-                                    <td className="p-1 text-right custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.quantity} PCS</td>
-                                    <td className="p-1 text-right custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.rate}</td>
-                                    <td className="p-1 text-right custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.amount}</td>
+                                    <td className="p-1">{i.itemDescription}</td>
+                                    <td className="p-1 text-right">{i.quantity} PCS</td>
+                                    <td className="p-1 text-right">{i.rate}</td>
+                                    <td className="p-1 text-right">{i.amount}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -116,6 +120,18 @@ export default function Invoice({ from, clientData, items }) {
                 </div>
             </div>
 
+            {items.map((i, index) => (
+                <div key={index} className="flex justify-between w-[794px] mx-auto mb-2">
+                    <span className={`${mode ? 'text-white' : 'text-black'}`}>{i.itemDescription} - {i.quantity} PCS</span>
+                    <button 
+                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    onClick={() => handleDelete(index)}
+                    >
+                    Delete
+                    </button>
+            </div>
+            ))}
+
             <select name="state" value={format} onChange={(e)=> setFormat(e.target.value)} className="font-bold py-2 px-4 rounded mx-auto block mb-10">
                 <option value="Png">PNG</option>
                 <option value="Pdf">PDF</option>
@@ -128,7 +144,7 @@ export default function Invoice({ from, clientData, items }) {
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#047857'}
                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#059669'}
             >
-                Download {}
+                Download {format === 'Png' ? 'PNG' : 'PDF'}
             </button>
         </>
     );

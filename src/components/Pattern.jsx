@@ -1,8 +1,11 @@
 
+import { useState } from "react";
 import { liveDate } from "../utils/uttils";
 import { totalAmount } from "../utils/uttils";
 
-export default function Pattern({from,  clientData, setClientData, itemDesc, setItemDesc, setItems, items}) {
+export default function Pattern({from,  clientData, setClientData, itemDesc, setItemDesc, setItems, items, mode, setMode}) {
+
+
 
     function handleChange(e) {
         const {name, value} = e.target;
@@ -44,14 +47,15 @@ export default function Pattern({from,  clientData, setClientData, itemDesc, set
 
     return (
        <>
-        <header className="w-full h-40 flex items-center justify-center"> 
+        <header className={`w-full h-40 flex items-center justify-center ${mode ? 'bg-black' : 'bg-white'}`}> 
             <img src="./logo.svg" alt=""  className="mt-5 w-[200px] h-[200px]"/>
         </header>
-        <div name='date & invoice flex w-full flex-start'>
+        <div name='date & invoice' className={`flex w-full justify-between ${mode ? 'bg-black' : 'bg-white'}`}>
             <h1 className="text-stone-400 font-serif text-lg md:text-2xl text-left w-full pl-3">Date: {liveDate()}</h1>
+            <button className="bg-green-600 text-white px-2 mr-5 mb-5 rounded-lg shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-colors duration-200" onClick={()=> setMode(prev=> !prev)}>Toggle Dark Mode</button>
         </div>
         <div className="w-screen md:h-80 h-auto flex flex-col md:flex-row">
-            <div name='from' className="md:w-1/2 w-full h-auto bg-blue-950 flex flex-col items-center gap-2" >
+            <div name='from' className={`md:w-1/2 w-full h-auto bg-blue-950 flex flex-col items-center gap-2`} >
                 <h1 className="text-stone-400 font-serif text-2xl md:text-4xl text-left w-full pl-3">FROM:</h1>
                 <input type="text" value={from.name} className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm  font-semibold md:w-1/2  w-[200px] bg-stone-900" readOnly/>
                 <input type="mail" value={from.email1} className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900" readOnly/>
@@ -77,7 +81,7 @@ export default function Pattern({from,  clientData, setClientData, itemDesc, set
         </div>
         <div className="w-screen md:h-80 h-auto flex flex-col md:flex-row">
            
-            <form onSubmit={handleSubmit} name='to' className="md:w-full w-full h-auto bg-red-950 flex flex-col items-center gap-2" >
+            <form onSubmit={handleSubmit} name='to' className="md:w-full w-full h-auto bg-blue-950 flex flex-col items-center gap-2" >
                 <h1 className="text-stone-400 font-serif text-2xl md:text-4xl text-left w-full pl-3">Items:</h1>
                 <input name="itemDescription" type="text" onChange={handleChangeForm} value={itemDesc.itemDescription} placeholder="Item Description " className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm  font-semibold md:w-1/2  w-[200px] bg-stone-900" />
                 <input name="quantity" type="number" onChange={handleChangeForm} value={itemDesc.quantity} placeholder="Quantity" className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900" />
