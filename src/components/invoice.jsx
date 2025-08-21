@@ -15,15 +15,15 @@ export default function Invoice({ from, clientData, items }) {
         setTimeout(() => {
             html2pdf()
                 .set({
-                    margin: 0.5,
+                    margin: 0,
                     filename: `Invoice_${clientData.client || "Customer"}.pdf`,
-                    image: { type: "png", quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: "in", format: "A4", orientation: "portrait" },
+                    image: { type: "png", quality: 1 },
+                    html2canvas: { scale: 2, width: 794, height: 1123 },
+                    jsPDF: { unit: "px", format: [794, 1123], orientation: "portrait" },
                 })
                 .from(element)
                 .save()
-                .catch(err => console.error("PDF generation failed:", err));
+            .catch(err => console.error("PDF generation failed:", err));
         }, 100);
     }
 
@@ -42,7 +42,7 @@ export default function Invoice({ from, clientData, items }) {
 
     return (
         <>
-            <div ref={invoiceRef} className={format === 'Pdf' ? 'max-w-4xl mx-auto p-6 shadow-lg rounded-lg my-5' : 'w-[794px] h-[1123px] mx-auto p-6 shadow-lg rounded-lg my-5'} style={{ backgroundColor: '#ffffff', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' }}>
+            <div ref={invoiceRef} className='w-[794px] h-[1123px] mx-auto p-6 shadow-lg rounded-lg my-5' style={{ backgroundColor: '#ffffff', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' }}>
                 <div className="flex flex-col border-b pb-4 mb-6">
                     <div className="w-full flex flex-col items-center">
                         <img src="./logo.svg" alt="Logo" className="h-35" />
@@ -87,19 +87,19 @@ export default function Invoice({ from, clientData, items }) {
                     <table className="w-full border-collapse">
                         <thead>
                             <tr className="custom-bg-lightgray">
-                                <th className="text-left p-3 font-bold text-xl custom-text-gray border-1">Item Description</th>
-                                <th className="text-right p-3 font-bold text-xl custom-text-gray border-1">Quantity</th>
-                                <th className="text-right p-3 font-bold text-xl custom-text-gray border-1">Rate</th>
-                                <th className="text-right p-3 font-bold text-xl custom-text-gray border-1">Amount</th>
+                                <th className="text-left p-3 font-bold text-lg custom-text-gray border-1">Item Description</th>
+                                <th className="text-right p-3 font-bold text-lg custom-text-gray border-1">Quantity</th>
+                                <th className="text-right p-3 font-bold text-lg custom-text-gray border-1">Rate</th>
+                                <th className="text-right p-3 font-bold text-lg custom-text-gray border-1">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
                             {items.map((i, index) => (
                                 <tr key={index} className="border-1">
-                                    <td className="p-3 custom-text-gray border-[1px] custom-text-gray text-lg font-semibold">{i.itemDescription}</td>
-                                    <td className="p-3 text-right custom-text-gray border-[1px] custom-text-gray text-lg font-semibold">{i.quantity} PCS</td>
-                                    <td className="p-3 text-right custom-text-gray border-[1px] custom-text-gray text-lg font-semibold">{i.rate}</td>
-                                    <td className="p-3 text-right custom-text-gray border-[1px] custom-text-gray text-lg font-semibold">{i.amount}</td>
+                                    <td className="p-1 custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.itemDescription}</td>
+                                    <td className="p-1 text-right custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.quantity} PCS</td>
+                                    <td className="p-1 text-right custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.rate}</td>
+                                    <td className="p-1 text-right custom-text-gray border-[1px] custom-text-gray text-md font-semibold">{i.amount}</td>
                                 </tr>
                             ))}
                         </tbody>
