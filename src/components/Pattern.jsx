@@ -20,8 +20,14 @@ export default function Pattern({from,  clientData, setClientData, itemDesc, set
         if (!itemDesc.itemDescription || !itemDesc.quantity || !itemDesc.rate) {
             return
         }
+
+        const newItem = {
+            ...itemDesc,
+            amount: Number(itemDesc.quantity) * Number(itemDesc.rate)
+        };
+
         // add the current itemDesc to the items array
-        setItems(prevItems => [...prevItems, itemDesc]);
+        setItems(prevItems => [...prevItems, newItem]);
         // reset the input fields
         
 
@@ -76,7 +82,8 @@ export default function Pattern({from,  clientData, setClientData, itemDesc, set
                 <input name="itemDescription" type="text" onChange={handleChangeForm} value={itemDesc.itemDescription} placeholder="Item Description " className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm  font-semibold md:w-1/2  w-[200px] bg-stone-900" />
                 <input name="quantity" type="number" onChange={handleChangeForm} value={itemDesc.quantity} placeholder="Quantity" className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900" />
                 <input name="rate" type="number" onChange={handleChangeForm} value={itemDesc.rate} placeholder="Rate" className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900" />
-                <input name="amount" type="number" onChange={handleChangeForm} value={itemDesc.quantity * itemDesc.rate} placeholder="Amount" className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900" readOnly />
+                {/* <input name="amount" type="number" onChange={handleChangeForm} value={itemDesc.amount} placeholder="Amount" className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900"/> */}
+                <input name="amount" type="number" value={itemDesc.quantity * itemDesc.rate} placeholder="Amount" className=" text-white outline-blue-700 rounded-lg pl-3 md:text-lg text-sm font-semibold md:w-1/2  w-[200px] bg-stone-900" readOnly/>
                 <div className="w-full flex items-center justify-center">
                     <h1 className="text-stone-400 font-serif pl-3 text-2xl md:text-4xl">Balance Due:</h1>
                     <h3 className="text-stone-400 font-serif pl-3 text-2xl md:text-4xl">{totalAmount(items)}</h3>

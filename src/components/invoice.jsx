@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { liveDate } from "../utils/uttils";
 import { formatDDMMYY } from "../utils/uttils";
 import { totalAmount } from "../utils/uttils";
@@ -7,6 +7,7 @@ import html2canvas from "html2canvas";
 
 export default function Invoice({ from, clientData, items }) {
     const invoiceRef = useRef();
+    const [format, setFormat] = useState('');
 
     function downloadPDF() {
         const element = invoiceRef.current;
@@ -26,6 +27,7 @@ export default function Invoice({ from, clientData, items }) {
         }, 100);
     }
 
+    // max-w-4xl mx-auto p-6 shadow-lg rounded-lg my-5
     
         function downloadPNG() {
         const element = invoiceRef.current;
@@ -40,7 +42,7 @@ export default function Invoice({ from, clientData, items }) {
 
     return (
         <>
-            <div ref={invoiceRef} className="w-[794px] h-[1123px] mx-auto p-6 shadow-lg rounded-lg my-5" style={{ backgroundColor: '#ffffff', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' }}>
+            <div ref={invoiceRef} className={format === 'Pdf' ? 'max-w-4xl mx-auto p-6 shadow-lg rounded-lg my-5' : 'w-[794px] h-[1123px] mx-auto p-6 shadow-lg rounded-lg my-5'} style={{ backgroundColor: '#ffffff', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' }}>
                 <div className="flex flex-col border-b pb-4 mb-6">
                     <div className="w-full flex flex-col items-center">
                         <img src="./logo.svg" alt="Logo" className="h-35" />
@@ -114,14 +116,19 @@ export default function Invoice({ from, clientData, items }) {
                 </div>
             </div>
 
+            <select name="state" value={format} onChange={(e)=> setFormat(e.target.value)} className="font-bold py-2 px-4 rounded mx-auto block mb-10">
+                <option value="Png">PNG</option>
+                <option value="Pdf">PDF</option>
+            </select>
+
             <button
-                onClick={downloadPNG}
+                onClick={format === 'Pdf' ? downloadPDF : downloadPNG}
                 className="font-bold py-2 px-4 rounded mx-auto block mb-10"
                 style={{ backgroundColor: '#059669', color: '#ffffff' }}
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#047857'}
                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#059669'}
             >
-                Download PDF
+                Download {}
             </button>
         </>
     );
