@@ -1,5 +1,3 @@
-
-import { useState } from "react";
 import { liveDate } from "../utils/uttils";
 import { totalAmount } from "../utils/uttils";
 
@@ -10,7 +8,7 @@ export default function Pattern({from,  clientData, setClientData, itemDesc, set
     function handleChange(e) {
         const {name, value} = e.target;
 
-        setClientData(prev => ({...prev, [name]: value}))
+        setClientData(prev => ({...prev, [name]: value}))       
     }
 
     function handleChangeForm(e) {

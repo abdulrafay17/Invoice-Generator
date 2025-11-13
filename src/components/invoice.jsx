@@ -5,7 +5,7 @@ import { totalAmount } from "../utils/uttils";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
 
-export default function Invoice({ from, clientData, items, setItems, mode }) {
+export default function Invoice({ from, clientData, items, saveInvoice, setItems, mode }) {
     const invoiceRef = useRef();
     const [format, setFormat] = useState('Png');
 
@@ -138,7 +138,10 @@ export default function Invoice({ from, clientData, items, setItems, mode }) {
             </select>
 
             <button
-                onClick={format === 'Pdf' ? downloadPDF : downloadPNG}
+                onClick={() => { 
+                    saveInvoice(); 
+                    format === 'Pdf' ? downloadPDF() : downloadPNG();
+                }}
                 className="font-bold py-2 px-4 rounded mx-auto block mb-10"
                 style={{ backgroundColor: '#059669', color: '#ffffff' }}
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#047857'}
